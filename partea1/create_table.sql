@@ -108,5 +108,5 @@ CREATE TABLE PICTURE(
   CONSTRAINT pic_album_fk FOREIGN KEY (album_id) REFERENCES ALBUM(album_id),
   CONSTRAINT pic_privacy_fk FOREIGN KEY(privacy_id) REFERENCES PRIVACY(privacy_id)
 );
-
-
+alter table PICTURE
+add picture_url nvarchar2(255) not null;
