@@ -1,0 +1,268 @@
+USER
+  *user_id : int 
+  >username : nvarchar(25)
+  >password : nvarchar(256)
+  >first_name : nvarchar(30)
+  >last_name : nvarchar(30)
+  >email : nvarchar(25)
+  >active : char(1) [Y/N]
+  >created_at : date
+
+
+
+PROFILE
+  *profile_id : int
+  -user_id (USER(user_id)) : int
+  >date_of_birth : date
+  >about_me : nvarchar(256)
+  >relationship : nvarchar(100)
+  >phone : nvarchar(12)
+  >interests : nvarchar(256)
+  >education : nvarchar(256)
+  >hobbies : nvarchar(256)
+  >fav_movies : nvarchar(100)
+  >fav_artists : nvarchar(100)
+  >fav_books : nvarchar(100)
+
+
+ADDRESS
+  *address_id : int
+  -profile_id(PROFILE(profile_id)) : int
+  -city (CITY(city_id)) : int
+  >address : nvarchar(100)
+
+
+CITY
+  *city_id : int
+  -county_id(COUNTY(county_id)) : int
+  >name : nvarchar(30)
+  
+
+COUNTY
+  *county_id : int
+  -country_id(COUNTRY(country_id)) : int
+  >name : nvarchar(30)
+
+
+COUNTRY
+  *country_id : int
+  > name : nvarchar(30)
+
+
+LANGUAGE
+  *language_id : int
+  -user_id(USER(user_id)) : int
+  >name : nvarchar(30)
+
+
+NICKNAME
+  *nickname_id : int
+  -profile_id(PROFILE(profile_id)) : int
+  >nickname : nvarchar(30)
+
+
+FRIENDS_LIST
+  *friends_list_id : int
+  -user_id(USER(user_id)) : int
+  -friend_user_id(USER(user_id)) : int
+  >created_at : date
+
+
+FRIEND_REQUEST
+  *friend_request_id : int
+  -user_id(USER(user_id)) : int
+  -friend_user_id(USER(user_id)) : int
+  >approved : char(1)
+  >created_at : date
+
+MESSAGE
+  *message_id : int
+  -user_id(USER(user_id)) : int
+  -friend_user_id(USER(user_id)) : int
+  >message_content : nvarchar(256)
+  >created_at : date
+  >is_read : char(1)
+  >is_spam : char(1) 
+  
+
+STATUS
+  *status_id : int
+  -user_id(USER(user_id)) : int
+  >status_content : nvarchar(256)
+  >created_at : date
+  >updated_at : date
+
+
+PRIVACY
+  *privacy_id : int
+  -status_id(STATUS(status_id)) : int
+  -profile_id(PROFILE(profile_id)) : int
+  -album_id(ALBUM(album_id)) : int
+  -picture_id(PICTURE(picture_id)) : int
+  -address_id(ADDRESS(address_id)) : int
+  -city_id(CITY(city_id)) : int
+  -county_id(COUNTY(county_id)) : int
+  -country_id(COUNTRY(country_id)) : int
+  >public : char(1)
+  >friends : char(1)
+  >only_me : char(1)
+
+
+ALBUM
+  *album_id : int
+  -user_id(USER(user_id)) : int
+  >name : nvarchar(30)
+  >description nvarchar(256)
+  >created_at : timestamp(10)
+  >updated_at : timestamp(10)
+
+PICTURE
+  *picture_id : int
+  -album_id(ALBUM(album_id)) : int
+  >description : nvarchar(256)
+  >created_at : timestamp(10)
+  >updated_at : timestamp(10)
+
+
+COMMENT_STATUS
+  *comment_status_id : int
+  -comment_from(FRIENDS_LIST(friends_list_id)) : int
+  -comment_id(COMMENT(comment_id)) : int
+  -status_id(STATUS(status_id)) : int
+
+
+COMMENT_ALBUM
+  *comment_album_id : int
+  -comment_from(FRIENDS_LIST(friends_list_id)) : int
+  -comment_id(COMMENT(comment_id)) : int
+  -album_id(ALBUM(album_id)) : int
+
+
+COMMENT_PICTURE
+  *comment_picture_id : int
+  -comment_from(FRIENDS_LIST(friends_list_id)) : int
+  -comment_id(COMMENT(comment_id)) : int
+  -picture_id(PICTURE(picture_id)) : int
+
+
+COMMENT
+  *comment_id : int
+  >comment_content : nvarchar(256)
+  >created_at : timestamp(10)
+  >updated_at : timestamp(10)
+ 
+
+LIKE_STATUS
+  *like_status_id : int
+  -like_id(LIKE(like_id)) : int
+  -status_id(STATUS(status_id)) : int
+  >like_status_no : number(3)
+
+
+LIKE_COMMENT
+  *like_comment_id : int
+  -like_id(LIKE(like_id)) : int
+  -comment_id(COMMENT(comment_id)) : int
+  >like_comment_no : number(3)
+
+
+LIKE_ALBUM
+  *like_album_id : int
+  -like_id(LIKE(like_id)) : int
+  -album_id(ALBUM(album_id)) : int
+  >like_album_no : number(3)
+
+
+LIKE_PICTURE
+  *like_picture_id : int
+  -like_id(LIKE(like_id)) : int
+  -picture_id(PICTURE(picture_id)) : int
+  >like_picture_no : number(3)
+
+
+LIKE
+  *like_id : int
+  -like_from(FRIENDS_LIST(friends_list_id)) : int
+  >created_at : timestamp(10)
+
+
+EVENT
+  *event_id : int
+  >name : nvarchar(100)
+  >description : nvarchar(256)
+  >address_id(address(address_id)) : int
+  >date : date
+  >created_at : timestamp(10)
+  >updated_at : timestamp(10)
+
+
+CREATE_EVENT
+  *create_event_id : int
+  -event_id(EVENT(event_id)) : int
+  -user_id(USER(user_id)) : int
+
+
+PARTICIPATE_EVENT
+  *participate_event_id : int
+  -event_id(EVENT(event_id)) : int
+  -user_id(USER(user_id)) : int
+
+
+FEED_STATUS
+  *feed_status_id : int
+  -feed_from(FRIENDS_LIST(friends_list_id)) : int
+  -status_id(STATUS(status_id)) : int
+  -feed_id(FEED(feed_id)) : int
+
+
+FEED_ALBUM
+  *feed_album_id : int
+  -feed_from(FRIENDS_LIST(friends_list_id)) : int
+  -album_id(ALBUM(album_id)) : int
+  -feed_id(FEED(feed_id)) : int
+
+
+FEED_PICTURE
+  *feed_picture_id : int
+  -feed_from(FRIENDS_LIST(friends_list_id)) : int
+  -picture_id(PICTURE(picture_id)) : int
+  -feed_id(FEED(feed_id)) : int
+
+
+FEED_EVENT
+  *feed_event_id : number (5)
+  -feed_from(FRIENDS_LIST(friends_list_id)) : int
+  -event_id(EVENT(event_id)) : int
+  -feed_id(FEED(feed_id)) : int
+
+
+FEED
+  *feed_id : int
+  -user_id(USER(user_id)) : int
+
+
+NOTIFICATION_COMMENT
+  *notification_comment_id : int
+  -comment_id(COMMENT(comment_id)) : int
+  -notification_comment_custom_content : nvarchar(100)
+
+
+NOTIFICATION_LIKE
+  *notification_like_id : int
+  -like_id(LIKE(like_id)) : int
+  >notification_like_custom_content nvarchar(100)
+
+
+NOTIFICATION_FRIEND
+  *notification_friend_id : int
+  -friend_id(FRIEND_REQUEST(friend_user_id)) : int
+  >notification_friend_content : nvarchar(100)
+
+
+
+
+
+
+
+  
+  

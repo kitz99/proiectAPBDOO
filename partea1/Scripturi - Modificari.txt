@@ -1,0 +1,350 @@
+-- create USER table
+CREATE TABLE USER(
+  user_id NUMBER(6),
+  language_id NUMBER(6),
+  username nvarchar2(255),
+  password nvarchar2(255),
+  first_name nvarchar2(255),
+  last_name nvarchar2(255),
+  email nvarchar2(255),
+  active nchar(1),
+  created_at date,
+  CONSTRAINT user_id_pk PRIMARY KEY (user_id) 
+  CONSTRAINT language_user_fk FOREIGN KEY(language_id) REFERENCES LANGUAGE(language_id)
+);
+
+
+-- create PROFILE table
+CREATE TABLE PROFILE (
+  profile_id NUMBER(6),
+  user_id NUMBER(6),
+  privacy_id NUMBER(6),
+  city_id NUMBER(6),
+  date_of_birth DATE,
+  about_me nvarchar2(255),
+  relationship nvarchar2(255),
+  phone  nvarchar2(255),
+  interests nvarchar2(255),
+  education nvarchar2(255),
+  hobbies  nvarchar2(255),
+  fav_movies  nvarchar2(255),
+  fav_artists  nvarchar2(255),
+  fav_books  nvarchar2(255), 
+  address nvarchar2(255),
+  CONSTRAINT profile_id_pk PRIMARY KEY (profile_id),
+  CONSTRAINT user_profile_fk FOREIGN KEY (user_id) REFERENCES USER(user_id),
+  CONSTRAINT privacy_profile_fk FOREIGN KEY (privacy_id) REFERENCES PRIVACY(privacy_id),
+  CONSTRAINT city_profile_fk FOREIGN KEY(city_id) REFERENCES CITY(city_id) 
+);
+
+
+-- ADDRESS tables -> COUNTRY -> COUNTY -> CITY -> ADDRESS
+CREATE TABLE COUNTRY (
+  country_id number(6),
+  privacy_id number(6),
+  name nvarchar2(255),
+  CONSTRAINT country_id_pk PRIMARY KEY (country_id),
+  CONSTRAINT privacy_country_fk FOREIGN KEY (privacy_id) REFERENCES PRIVACY(privacy_id)  
+);
+
+CREATE TABLE COUNTY (
+  county_id number(6),
+  country_id number(6),
+  privacy_id number(6),
+  name nvarchar2(255),
+  CONSTRAINT county_id_pk PRIMARY KEY (county_id), 
+  CONSTRAINT county_country_fk FOREIGN KEY (country_id) REFERENCES COUNTRY(country_id),  
+  CONSTRAINT privacy_county_fk FOREIGN KEY (privacy_id) REFERENCES PRIVACY(privacy_id)
+);
+
+CREATE TABLE CITY (
+  city_id number(6),
+  county_id number(6),
+  privacy_id number(6),
+  name nvarchar2(255),
+  CONSTRAINT city_id_pk PRIMARY KEY (city_id), 
+  CONSTRAINT county_city_fk FOREIGN KEY (county_id) REFERENCES COUNTY(county_id),
+  CONSTRAINT privacy_city_fk FOREIGN KEY (privacy_id) REFERENCES PRIVACY(privacy_id)
+  
+);
+
+-- Language table
+CREATE TABLE LANGUAGE (
+  language_id number(6),
+  name nvarchar2(255),
+  CONSTRAINT language_id_pk PRIMARY KEY (language_id)
+);
+
+
+-- friend_list table
+CREATE TABLE FRIEND_LIST(
+  friend_list_id number(6),
+  user_id number(6),
+  friend_user_id number(6),
+  state nchar(1),
+  created_at date,
+  CONSTRAINT friend_list_pk PRIMARY KEY (friend_list_id),
+  CONSTRAINT fl_user_fk FOREIGN KEY (user_id) REFERENCES USER(user_id),
+  CONSTRAINT fl1_user_fk FOREIGN KEY (friend_user_id) REFERENCES USER(user_id)
+);
+
+-- MESSAGE table
+CREATE TABLE MESSAGE(
+  message_id number(6),
+  user_id number(6),
+  friend_user_id number(6),
+  message_content nvarchar2(255),
+  created_at date,
+  is_read nchar(1),
+  is_spam nchar(1),
+  CONSTRAINT message_id_pk PRIMARY KEY (message_id),
+  CONSTRAINT mes_user_fk FOREIGN KEY (user_id) REFERENCES USER(user_id),
+  CONSTRAINT mes1_user_FK FOREIGN KEY (friend_user_id) REFERENCES USER(user_id)
+);
+
+CREATE TABLE STATUS (
+  status_id number(6),
+  user_id number(6),
+  privacy_id number(6),
+  status_content NVARCHAR2(255),
+  created_at date,
+  updated_at date,
+  CONSTRAINT status_pk PRIMARY KEY (status_id),
+  CONSTRAINT status_user_fk FOREIGN KEY (user_id) REFERENCES USER(user_id),
+  CONSTRAINT privacy_status_fk FOREIGN KEY (privacy_id) REFERENCES PRIVACY(privacy_id)
+);
+
+CREATE TABLE PRIVACY (
+  privacy_id number(6),
+  privacy_type nvarchar2(255),
+  CONSTRAINT privacy_pk PRIMARY KEY (privacy_id)
+);
+
+-- ALBUM TABLE
+CREATE TABLE ALBUM(
+  album_id number(6) CONSTRAINT album_id_nn NOT NULL,
+  user_id number(6),
+  privacy_id number(6),
+  name nvarchar2(255),
+  description nvarchar2(255),
+  created_at date,
+  updated_at date,
+  CONSTRAINT album_pk PRIMARY KEY (album_id),
+  CONSTRAINT album_user_fk FOREIGN KEY (user_id) REFERENCES USER(user_id),
+  CONSTRAINT privacy_album_fk FOREIGN KEY (privacy_id) REFERENCES PRIVACY(privacy_id)
+);
+
+-- PICTURE table
+CREATE TABLE PICTURE(
+  picture_id number(6) CONSTRAINT pic_nn NOT NULL,
+  album_id number(6),
+  privacy_id number(6),
+  description nvarchar2(255),
+  created_at date,
+  updated_at date,
+  is_album_cover nchar(1),
+  is_profile_picture nchar(1),
+  CONSTRAINT pic_pk PRIMARY KEY (picture_id),
+  CONSTRAINT pic_album_fk FOREIGN KEY (album_id) REFERENCES ALBUM(album_id),
+  CONSTRAINT privacy_picture_fk FOREIGN KEY (privacy_id) REFERENCES PRIVACY(privacy_id)
+);
+
+
+-- privacy table
+CREATE TABLE PRIVACY(
+  privacy_id number(6) CONSTRAINT priv_nn NOT NULL,
+  privacy_type nvarchar2(255),
+  CONSTRAINT priv_pk PRIMARY KEY (privacy_id),
+);
+
+-- COMMENT TABLE
+CREATE TABLE COMMENT(
+  comment_id number(6) CONSTRAINT comm_nn NOT NULL,
+  comment_from NUMBER(6),
+  comment_content nvarchar2(255),
+  created_at date,
+  updated_at date,
+  CONSTRAINT comm_pk PRIMARY KEY (comment_id)
+  CONSTRAINT user_comm_fk FOREIGN KEY (comment_from) REFERENCES FRIEND_LIST(friends_list_id)
+);
+
+-- comment-status
+CREATE TABLE COMMENT_STATUS(
+  comment_status_id number(6) CONSTRAINT cs_nn NOT NULL,
+  comment_id number(6),
+  status_id number(6),
+  CONSTRAINT cs_pk PRIMARY KEY (comment_status_id),
+  CONSTRAINT com_cs_fk FOREIGN KEY (comment_id) REFERENCES COMMENT(comment_id),
+  CONSTRAINT status_cs_fk FOREIGN KEY (status_id) REFERENCES STATUS(status_id)
+);
+
+-- comment album
+CREATE TABLE COMMENT_ALBUM(
+  comment_album_id number(6) CONSTRAINT ca_nn NOT NULL,
+  comment_id number(6),
+  album_id number(6),
+  CONSTRAINT ca_pk PRIMARY KEY (comment_album_id),
+  CONSTRAINT ca_comm_fk FOREIGN KEY (comment_id) REFERENCES COMMENT(comment_id),
+  CONSTRAINT album_ca_fk FOREIGN KEY(album_id) REFERENCES ALBUM(album_id)
+);
+
+-- Comment picture
+CREATE TABLE COMMENT_PICTURE(
+  comment_picture_id number(6) CONSTRAINT cp_nn NOT NULL,
+  comment_id number(6),
+  picture_id number(6),
+  CONSTRAINT cp_pk PRIMARY KEY (comment_picture_id),
+  CONSTRAINT cP_comm_fk FOREIGN KEY (comment_id) REFERENCES COMMENT(comment_id),
+  constraint cp_pic_fk FOREIGN KEY (picture_id) REFERENCES PICTURE(picture_id)
+);
+
+-- LIKE table
+CREATE TABLE LIKE(
+  like_id number(6) CONSTRAINT l_nn NOT NULL,
+  like_from number(6),
+  created_at date,
+  CONSTRAINT l_pk PRIMARY KEY (like_id),
+  CONSTRAINT l_fr_fk FOREIGN KEY (like_from) REFERENCES FRIEND_LIST(friends_list_id) 
+);
+
+-- LIKE_status table
+CREATE TABLE LIKE_STATUS(
+  like_status_id number(6) CONSTRAINT ls_nn NOT NULL,
+  like_id number(6),
+  status_id number(6),
+  like_status_no NUMBER(9),
+  CONSTRAINT ls_pk PRIMARY KEY (like_status_id),
+  CONSTRAINT ls_l_fk FOREIGN KEY (like_id) REFERENCES LIKE(like_id),
+  CONSTRAINT st_l_fk FOREIGN KEY (status_is) REFERENCES STATUS(status_id)
+);
+
+-- LIKE_comment
+CREATE TABLE LIKE_COMMENT(
+  like_comment_id number(6) CONSTRAINT lk_nn NOT NULL,
+  like_id number(6),
+  comment_id number(6),
+  like_comment_no NUMBER(9),
+  CONSTRAINT lk_pk PRIMAR KEY (like_comment_id),
+  CONSTRAINT l_lk_fk FOREIGN KEY (like_id) REFERENCES LIKE(like_id),
+  CONSTRAINT c_lk_fk FOREIGN KEY (comment_id) REFERENCES COMMENT(comment_id)
+);
+
+--LIKE album
+CREATE TABLE LIKE_ALBUM(
+  like_album_id number(6) CONSTRAINT la_nn NOT NULL,
+  like_id number(6),
+  album_id number(6),
+  like_album_no NUMBER(9),
+  CONSTRAINT la_pk PRIMARY KEY (like_album_id),
+  CONSTRAINT l_la_fk FOREIGN KEY (like_id) REFERENCES LIKE(like_id),
+  CONSTRAINT la_a_fk FOREIGN KEY (album_id) REFERENCES ALBUM(album_id)
+);
+
+CREATE TABLE LIKE_PICTURE(
+  like_picture_id number(6) CONSTRAINT lp_nn NOT NULL,
+  like_id number(6),
+  picture_id number(6),
+  like_picture_no NUMBER(9),
+  CONSTRAINT lp_pk PRIMARY KEY (like_picture_id),
+  CONSTRAINT l_lp_fk FOREIGN KEY (like_id) REFERENCES LIKE(like_id),
+  CONSTRAINT lp_p_fk FOREIGN KEY (picture_id) REFERENCES PICTURE(picture_id)
+);
+
+-- EVENT TABLE
+CREATE TABLE EVENT(
+  event_id number(6) CONSTRAINT ev_nn NOT NULL,
+  city_id number(6),
+  name nvarchar2(255),
+  description nvarchar2(255),
+  address nvarchar2(255),
+  event_date date,
+  created_at date,
+  updated_at date,
+  CONSTRAINT e_pk PRIMARY KEY(event_id),
+  CONSTRAINT e_c_fk FOREIGN KEY (city_id) REFERENCES CITY(city_id)
+);
+
+CREATE TABLE CREATE_EVENT(
+  create_event_id number(6) CONSTRAINT ce_nn NOT NULL,
+  event_id number(6),
+  user_id number(6),
+  CONSTRAINT ce_pk PRIMARY KEY (create_event_id),
+  CONSTRAINT ev_c_fk FOREIGN KEY (event_id) REFERENCES EVENT(event_id).
+  CONSTRAINT us_e_fk FOREIGN KEY (user_id) REFERENCES USER(user_id)
+);
+
+CREATE TABLE PARTICIPATE_EVENT(
+  p_event_id number(6) CONSTRAINT p_e_nn NOT NULL,
+  event_id number(6),
+  user_id number(6),
+  CONSTRAINT ev_p_pk PRIMARY KEY (p_event_id),
+  CONSTRAINT ev_p_fk FOREIGN KEY (event_id) REFERENCES EVENT(event_id),
+  CONSTRAINT us_p_fk FOREIGN KEY (user_id) REFERENCES USER(user_id)
+);
+
+CREATE TABLE FEED(
+  feed_id number(6) CONSTRAINT feed_nn NOT NULL,
+  user_id number(6),
+  CONSTRAINT feed_pk PRIMARY KEY (feed_id),
+  CONSTRAINT feed_u_fk FOREIGN KEY (user_id) REFERENCES USER(user_id)
+);
+
+CREATE TABLE FEED_STATUS(
+  feed_status_id number(6) CONSTRAINT feed_s_nn NOT NULL,
+  status_id number(6),
+  feed_id number(6),
+  CONSTRAINT feed_s_pk PRIMARY KEY (feed_status_id),
+  CONSTRAINT fs_st_fk FOREIGN KEY (status_id) REFERENCES STATUS(status_id),
+  CONSTRAINT fs_feed_fk FOREIGN KEY (feed_id) REFERENCES FEED(feed_id)
+);
+
+CREATE TABLE FEED_ALBUM(
+  feed_album_id NUMBER(6) CONSTRAINT feed_a_nn NOT NULL,
+  album_id number(6),
+  feed_id number(6),
+  CONSTRAINT feed_a_pk PRIMARY KEY (feed_album_id),
+  CONSTRAINT fa_al_fk FOREIGN KEY (album_id) REFERENCES ALBUM(album_id),
+  CONSTRAINT fa_feed_fk FOREIGN KEY (feed_id) REFERENCES FEED(feed_id)
+);
+
+CREATE TABLE FEED_PICTURE(
+  feed_picture_id number(6) CONSTRAINT feed_p_nn NOT NULL,
+  picture_id number(6),
+  feed_id number(6),
+  CONSTRAINT feed_p_pk PRIMARY KEY (feed_picture_id),
+  CONSTRAINT fp_pic_fk FOREIGN KEY (picture_id) REFERENCES PICTURE(picture_id),
+  CONSTRAINT fp_feed_fk FOREIGN KEY (feed_id) REFERENCES FEED(feed_id)
+);
+
+CREATE TABLE FEED_EVENT(
+  feed_event_id number(6) CONSTRAINT feed_ev_nn NOT NULL,
+  event_id number(6),
+  feed_id number(6),
+  CONSTRAINT feed_e_pk PRIMARY KEY (feed_event_id),
+  CONSTRAINT fe_ev_fk FOREIGN KEY (event_id) REFERENCES EVENT(event_id),
+  CONSTRAINT fe_feed_fk FOREIGN KEY (feed_id) REFERENCES FEED(feed_id)
+);
+
+CREATE TABLE NOTIFICATION_COMMENT(
+  notification_comment_id number(6) CONSTRAINT not_com_nn NOT NULL,
+  comment_id number(6),
+  notification_comment_custom_content nvarchar2(255),
+  CONSTRAINT not_comm_pk PRIMARY KEY (notification_comment_id),
+  CONSTRAINT com_not_fk FOREIGN KEY (comment_id) REFERENCES COMMENT(comment_id)
+);
+
+CREATE TABLE NOTIFICATION_LIKE(
+  notification_like_id number(6) CONSTRAINT not_lik_nn NOT NULL,
+  like_id number(6),
+  notification_like_custom_content nvarchar2(255),
+  CONSTRAINT not_lk_pk PRIMARY KEY (notification_like_id),
+  CONSTRAINT lik_not_fk FOREIGN KEY (like_id) REFERENCES LIKE(like_id)
+);
+
+CREATE TABLE NOTIFICATION_FRIEND(
+  notification_firend_id number(6) CONSTRAINT not_fr_nn NOT NULL,
+  friend_id number(6),
+  notification_friend_custom_content nvarchar2(255),
+  CONSTRAINT not_fr_pk PRIMARY KEY (notification_friend_id),
+  CONSTRAINT fr_not_fk FOREIGN KEY (friend_id) REFERENCES FRIEND_REQUEST(friend_user_id)
+);
