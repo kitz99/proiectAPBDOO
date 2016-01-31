@@ -9,11 +9,11 @@ insert into LANGUAGE values (4,'Germana');
 
 insert into APP_USER 
 select 1,1,'Teo Dora','teodora','Teodora','Cernea','teodora.cernea@yahoo.com', sysdate 
-from dual
+from dual;
 
 insert into APP_USER 
 select 2,2,'Bogdan Timofte','bogdan','Bogdan','Timofte','bogdan.timofte@hotmail.com', sysdate 
-from dual
+from dual;
 
 insert into COUNTRY values(1,3,'Romania');
 insert into COUNTRY values(2,3,'SUA');
@@ -42,14 +42,16 @@ insert into USER_PROFILE values (2,2,1,4,to_date('19930614','yyyymmdd'),'Geek','
 
 insert into STATUS 
 select 1,1,1,'Sunt in sesiune',sysdate,sysdate
-from dual
+from dual;
 
 insert into ALBUM
-values(1,1,2,'Album 1','Moments',sysdate,sysdate)
+values(1,1,2,'Album 1','Moments',sysdate,sysdate);
 insert into ALBUM
-values(2,2,3,'Album 2','Diverse',sysdate,sysdate)
+values(2,2,3,'Album 2','Diverse',sysdate,sysdate);
 
 insert into PICTURE
 values(1,1,2,'Descriere 1',sysdate,sysdate,1,0,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8PeV0XKLSuhNS5JnLWaFJeT_aPQpapBenwCazsWv--WhiNL5CCqxTV2R4');
 insert into PICTURE values(2,1,3,'Descriere 2',sysdate,sysdate,0,1,'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT85kv4jURd_5JGzAGwREl9bXz840BThph6ug097KEof6XFMhIkDQ');
 insert into PICTURE values(3,2,3,'Descriere 3',sysdate,sysdate,1,1,'https://pixabay.com/static/uploads/photo/2013/07/13/11/44/penguin-158551_640.png');
+
+
