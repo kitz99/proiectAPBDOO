@@ -1,0 +1,47 @@
+INSERT INTO tari VALUES (1, 'Romania');
+
+INSERT INTO judete VALUES (1, 1, 'Alba'); 
+INSERT INTO judete VALUES (2, 1, 'Arad');
+INSERT INTO judete VALUES (3, 1, 'Arges'); 
+INSERT INTO judete VALUES (4, 1, 'Bacau'); 
+INSERT INTO judete VALUES (5, 1, 'Bihor');
+INSERT INTO judete VALUES (6, 1, 'Bistrita-Nasaud'); 
+INSERT INTO judete VALUES (7, 1, 'Botosani'); 
+INSERT INTO judete VALUES (8, 1, 'Braila'); 
+INSERT INTO judete VALUES (9, 1, 'Brasov'); 
+INSERT INTO judete VALUES (10, 1, 'Buzau');
+INSERT INTO judete VALUES (11, 1, 'Calarasi');
+INSERT INTO judete VALUES (12, 1, 'Caras-Severin'); 
+INSERT INTO judete VALUES (13, 1, 'Cluj');
+INSERT INTO judete VALUES (14, 1, 'Constanta'); 
+INSERT INTO judete VALUES (15, 1, 'Covasna');
+INSERT INTO judete VALUES (16, 1, 'Dambovita'); 
+INSERT INTO judete VALUES (17, 1, 'Dolj');
+INSERT INTO judete VALUES (18, 1, 'Galati');
+INSERT INTO judete VALUES (19, 1, 'Giurgiu'); 
+INSERT INTO judete VALUES (20, 1, 'Gorj');
+INSERT INTO judete VALUES (21, 1, 'Harghita');
+INSERT INTO judete VALUES (22, 1, 'Hunedoara'); 
+INSERT INTO judete VALUES (23, 1, 'Ialomita'); 
+INSERT INTO judete VALUES (24, 1, 'Iasi');
+INSERT INTO judete VALUES (25, 1, 'Ilfov');
+INSERT INTO judete VALUES (26, 1, 'Maramures'); 
+INSERT INTO judete VALUES (27, 1, 'Mehedinti'); 
+INSERT INTO judete VALUES (28, 1, 'Mures');
+INSERT INTO judete VALUES (29, 1, 'Neamt'); 
+INSERT INTO judete VALUES (30, 1, 'Olt');
+INSERT INTO judete VALUES (31, 1, 'Prahova'); 
+INSERT INTO judete VALUES (32, 1, 'Salaj');
+INSERT INTO judete VALUES (33, 1, 'Satu Mare'); 
+INSERT INTO judete VALUES (34, 1, 'Sibiu');
+INSERT INTO judete VALUES (35, 1, 'Suceava');
+INSERT INTO judete VALUES (36, 1, 'Telerman'); 
+INSERT INTO judete VALUES (37, 1, 'Timis');
+INSERT INTO judete VALUES (38, 1, 'Tulcea'); 
+INSERT INTO judete VALUES (39, 1, 'Vaslui'); 
+INSERT INTO judete VALUES (40, 1, 'Valcea');
+INSERT INTO judete VALUES (41, 1, 'Vrancea');
+
+INSERT INTO tip_clinici VALUES (1, 1, 'Oftalmologica');
+INSERT INTO tip_clinici VALUES (2, 2, 'Dentara');
+
