@@ -1,0 +1,5 @@
+FRM-30041: Position of item places it off of canvas.
+Item: ENTER_QUERY
+Block: USER_PROFILE
+Form: SHOW_USER_PROFILE
+FRM-30085: Unable to adjust form for output.
